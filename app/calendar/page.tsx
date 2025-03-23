@@ -16,7 +16,7 @@ export default function CalendarPage() {
     {
       id: 1,
       title: "Tech Innovation Conference",
-      date: new Date(new Date().getFullYear(), new Date().getMonth(), 15), // Current month, 15th day
+      date: new Date(new Date().getFullYear(), new Date().getMonth(), 23), // Current month, 15th day
       time: "5:00 PM - 8:00 PM",
       location: "Student Center",
       image: "/placeholder.svg?height=80&width=80&text=Tech",
@@ -104,12 +104,12 @@ export default function CalendarPage() {
                         className={cn(
                           // buttonProps.className,
                           "relative",
-                          hasEvent && "font-bold"
+                          hasEvent && "font-extrabold "
                         )}
                       >
                         {date.getDate()}
                         {hasEvent && (
-                          <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-1 rounded-full bg-primary" />
+                          <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-1 h-1 rounded-full bg-accent" />
                         )}
                       </button>
                     );

@@ -15,6 +15,12 @@ import Image from "next/image";
 import Link from "next/link";
 import EventCarousel from "@/components/event-carousel";
 import { useState } from "react";
+import { Anton } from "next/font/google";
+
+const anton = Anton({
+  subsets: ["latin"],
+  weight: ["400"],
+});
 
 // Sample news data
 const newsData = [
@@ -229,6 +235,13 @@ export default function Home() {
             </Link>
           ))}
         </div>
+      </div>
+      <div className="flex justify-center items-center  h-40 pt-20">
+        <h1
+          className={`${anton.className} text-7xl text-center font-extrabold text-[#3a3a3a98]`}
+        >
+          EPIC VIBES <br /> ZERO STRESS
+        </h1>
       </div>
     </div>
   );

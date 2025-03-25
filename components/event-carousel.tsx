@@ -1,13 +1,7 @@
 "use client";
 
 import { Card, CardContent } from "@/components/ui/card";
-import {
-  Calendar,
-  Clock,
-  MapPin,
-  ChevronLeft,
-  ChevronRight,
-} from "lucide-react";
+import { Calendar, Clock, MapPin } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -56,23 +50,10 @@ export default function EventCarousel() {
     const interval = setInterval(() => {
       setDirection(1); // Set direction to forward
       setCurrentIndex((prevIndex) => (prevIndex + 1) % events.length);
-    }, 5000);
+    }, 3000);
 
     return () => clearInterval(interval);
   }, [isPaused]);
-
-  // Handle manual navigation
-  const handlePrevious = () => {
-    setDirection(-1);
-    setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? events.length - 1 : prevIndex - 1
-    );
-  };
-
-  const handleNext = () => {
-    setDirection(1);
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % events.length);
-  };
 
   // Animation variants
   const slideVariants = {
@@ -128,43 +109,18 @@ export default function EventCarousel() {
 
   return (
     <div
-      className="relative overflow-hidden rounded-xl"
+      className="relative overflow-hidden rounded-xl border-transparent"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
-      {/* Navigation buttons */}
-      <div className="absolute inset-y-0 left-0 z-10 flex items-center">
-        <Button
-          onClick={handlePrevious}
-          variant="ghost"
-          size="icon"
-          className="h-8 w-8 rounded-full bg-black/30 text-white hover:bg-black/50 backdrop-blur-sm -ml-4 hover:ml-0 transition-all"
-        >
-          <ChevronLeft className="h-5 w-5" />
-          <span className="sr-only">Previous</span>
-        </Button>
-      </div>
-
-      <div className="absolute inset-y-0 right-0 z-10 flex items-center">
-        <Button
-          onClick={handleNext}
-          variant="ghost"
-          size="icon"
-          className="h-8 w-8 rounded-full bg-black/30 text-white hover:bg-black/50 backdrop-blur-sm -mr-4 hover:mr-0 transition-all"
-        >
-          <ChevronRight className="h-5 w-5" />
-          <span className="sr-only">Next</span>
-        </Button>
-      </div>
-
-      {/* Indicators */}
-      <div className="absolute bottom-4 left-0 right-0 z-10 flex justify-center gap-2">
+      {/* Indicators - repositioned lower */}
+      <div className="absolute -bottom-6 left-0 right-0 z-10 flex justify-center gap-2 pb-6">
         {events.map((_, index) => (
           <Button
             key={index}
             variant="ghost"
             size="icon"
-            className={`h-2 w-10 p-0 rounded-full transition-all duration-300 ${
+            className={`h-1 w-10 p-0 rounded-full transition-all duration-300 ${
               index === currentIndex
                 ? "bg-accent scale-100"
                 : "bg-white/30 scale-75 hover:scale-90"
@@ -220,7 +176,7 @@ export default function EventCarousel() {
                     {events[currentIndex].organizer}
                   </motion.p>
                   <motion.div
-                    className="flex flex-wrap gap-x-4 gap-y-1 mt-3"
+                    className="flex flex-wrap gap-x-4 gap-y-1 mt-3 pb-3"
                     variants={contentVariants}
                   >
                     <motion.div

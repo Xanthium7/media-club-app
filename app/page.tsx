@@ -6,7 +6,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
@@ -14,7 +13,7 @@ import { ArrowRight, Calendar, Clock, MapPin } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import EventCarousel from "@/components/event-carousel";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Anton } from "next/font/google";
 
 const anton = Anton({
@@ -22,7 +21,7 @@ const anton = Anton({
   weight: ["400"],
 });
 
-// Sample news data
+// Sample news data - adding more items for cycling
 const newsData = [
   {
     id: 1,
@@ -38,9 +37,23 @@ const newsData = [
     content:
       "The IT Department has completed the campus-wide Wi-Fi upgrade project. All dormitories, academic buildings, and common areas now feature high-speed 6E Wi-Fi technology, providing speeds up to 2.5 Gbps. The new system includes improved security features and expanded coverage to eliminate dead zones. Students experiencing connectivity issues should contact the IT helpdesk at extension 3456 or submit a ticket through the student portal.",
   },
+  {
+    id: 3,
+    title: "Dean's List Announced",
+    summary: "Congratulations to all students who made the Fall Dean's List!",
+    content:
+      "The Office of Academic Affairs is pleased to announce that 342 students have been named to the Dean's List for the Fall 2023 semester. This recognition is awarded to students who have maintained a GPA of 3.5 or higher while taking at least 12 credit hours.",
+  },
+  {
+    id: 4,
+    title: "Career Fair Next Month",
+    summary: "Over 50 employers will be recruiting at the Spring Career Fair.",
+    content:
+      "The Career Development Center is hosting the annual Spring Career Fair on February 12th from 10 AM to 3 PM in the Student Recreation Center. More than 50 employers from various industries will be present, offering full-time positions, internships, and networking opportunities.",
+  },
 ];
 
-// Sample notices data
+// Sample notices data - adding more items for cycling
 const noticesData = [
   {
     id: 1,
@@ -56,12 +69,33 @@ const noticesData = [
     content:
       "Facilities Management will be conducting essential maintenance in West Hall from July 10-12. This will include plumbing updates, fire safety inspections, and HVAC servicing. Students currently residing in West Hall will need to vacate their rooms between 9 AM and 4 PM each day. A temporary study and relaxation space will be available in the East Hall common room during this time. Personal belongings can remain in the rooms, but should be secured. For questions or concerns, please contact Housing Services at housing@university.edu.",
   },
+  {
+    id: 3,
+    title: "Financial Aid Application Deadline",
+    summary: "FAFSA submission deadline for next academic year is approaching.",
+    content:
+      "The priority deadline for FAFSA submission for the next academic year is December 1st. Students who submit their FAFSA by this date will be given priority consideration for all federal, state, and institutional aid programs.",
+  },
+  {
+    id: 4,
+    title: "Health Insurance Verification",
+    summary: "Proof of health insurance required for all students.",
+    content:
+      "All students must submit proof of adequate health insurance coverage by September 15th or enroll in the University Student Health Insurance Plan.",
+  },
 ];
 
 export default function Home() {
   const [isNewsDialogOpen, setIsNewsDialogOpen] = useState(false);
   const [isNoticeDialogOpen, setIsNoticeDialogOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<any>(null);
+  const [activeTab, setActiveTab] = useState("news");
+  const newsCarouselRef = useRef<HTMLDivElement>(null);
+  const noticesCarouselRef = useRef<HTMLDivElement>(null);
+
+  // Get all news and notices for cycling
+  const allNews = newsData;
+  const allNotices = noticesData;
 
   const openNewsDialog = (news: any) => {
     setSelectedItem(news);
@@ -73,81 +107,171 @@ export default function Home() {
     setIsNoticeDialogOpen(true);
   };
 
+  // Setup auto-cycling for carousels
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const currentCarouselRef =
+        activeTab === "news" ? newsCarouselRef : noticesCarouselRef;
+
+      if (currentCarouselRef.current) {
+        const scrollAmount = 320; // Width of a card
+        const maxScroll =
+          currentCarouselRef.current.scrollWidth -
+          currentCarouselRef.current.clientWidth;
+        const currentScroll = currentCarouselRef.current.scrollLeft;
+
+        // If we're near the end, jump back to start, otherwise scroll by one card
+        if (currentScroll + scrollAmount > maxScroll) {
+          currentCarouselRef.current.scrollTo({ left: 0, behavior: "smooth" });
+        } else {
+          currentCarouselRef.current.scrollBy({
+            left: scrollAmount,
+            behavior: "smooth",
+          });
+        }
+      }
+    }, 5000); // Cycle every 5 seconds
+
+    return () => clearInterval(interval);
+  }, [activeTab]);
+
   return (
-    <div className="container px-4 py-6 space-y-6 pb-20">
-      {/* Existing code for header section */}
-      <div className="flex items-center justify-between">
+    <div className="container px-6 py-8 space-y-10 pb-20 max-w-5xl mx-auto">
+      {/* Header section */}
+      <div className="flex items-center justify-between py-3">
         <div>
           <h1 className="text-2xl font-bold">Hello, Mr Potato</h1>
-          <p className="text-muted-foreground">
+          <p className="text-muted-foreground mt-1">
             Discover events at your college
           </p>
         </div>
-        <div className="relative h-10 w-10 rounded-full bg-primary/10">
-          <span className="absolute inset-0 flex items-center justify-center text-primary font-bold">
+        <div className="relative h-12 w-12 rounded-full bg-primary/10 shadow-sm hover:shadow-md transition-all duration-300">
+          <span className="absolute inset-0 flex items-center justify-center text-primary font-bold text-lg">
             S
           </span>
         </div>
       </div>
 
-      {/* Existing code for Hot Events */}
-      <div className="relative">
-        <h2 className="text-xl font-bold mb-4 flex items-center">
+      {/* Hot Events section */}
+      <div className="relative mt-6">
+        <h2 className="text-xl font-bold mb-5 flex items-center">
           Hot Events
           <span className="ml-2 inline-block h-2 w-2 rounded-full bg-accent pulse-accent"></span>
         </h2>
-        <EventCarousel />
+        <div className="rounded-lg overflow-hidden shadow-sm">
+          <EventCarousel />
+        </div>
       </div>
 
-      {/* Modified Tabs - removed Jobs tab */}
-      <Tabs defaultValue="news" className="w-full">
-        <TabsList className="grid w-full grid-cols-2 bg-secondary">
-          <TabsTrigger value="news">News</TabsTrigger>
-          <TabsTrigger value="notices">Notices</TabsTrigger>
-        </TabsList>
-        <TabsContent value="news" className="space-y-4 mt-4">
-          {newsData.map((news) => (
-            <Card key={news.id} className="event-card-hover">
-              <CardContent className="p-4">
-                <h3 className="font-semibold">{news.title}</h3>
-                <p className="text-sm text-muted-foreground">{news.summary}</p>
-                <div className="flex justify-end mt-2">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="text-primary"
-                    onClick={() => openNewsDialog(news)}
-                  >
-                    Read more
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </TabsContent>
-        <TabsContent value="notices" className="space-y-4 mt-4">
-          {noticesData.map((notice) => (
-            <Card key={notice.id} className="event-card-hover">
-              <CardContent className="p-4">
-                <h3 className="font-semibold">{notice.title}</h3>
-                <p className="text-sm text-muted-foreground">
-                  {notice.summary}
-                </p>
-                <div className="flex justify-end mt-2">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="text-primary"
-                    onClick={() => openNoticeDialog(notice)}
-                  >
-                    Details
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </TabsContent>
-      </Tabs>
+      {/* Tabs section with auto-cycling carousels */}
+      <div className="mt-8">
+        <Tabs
+          defaultValue="news"
+          className="w-full"
+          onValueChange={setActiveTab}
+        >
+          <div className="flex  items-center justify-between mb-5">
+            <TabsList className="bg-secondary rounded-lg">
+              <TabsTrigger value="news" className="px-6 py-2.5">
+                News
+              </TabsTrigger>
+              <TabsTrigger value="notices" className="px-6 py-2.5">
+                Notices
+              </TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="news" className="m-0 inline-flex">
+              <Link href="/news">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-accent   flex  items-center font-medium hover:bg-accent/5"
+                >
+                  View all
+                  <ArrowRight className="h-4 w-4 ml-1" />
+                </Button>
+              </Link>
+            </TabsContent>
+
+            <TabsContent value="notices" className="m-0 inline-flex">
+              <Link href="/notices">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-accent flex items-center font-medium hover:bg-accent/5"
+                >
+                  View all
+                  <ArrowRight className="h-4 w-4 ml-1" />
+                </Button>
+              </Link>
+            </TabsContent>
+          </div>
+
+          <TabsContent value="news" className="relative mt-0">
+            <div
+              className="flex space-x-4 overflow-x-auto pb-4 scrollbar-hide"
+              ref={newsCarouselRef}
+              style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+            >
+              {allNews.map((news) => (
+                <Card
+                  key={news.id}
+                  className="flex-shrink-0 w-[320px] event-card-hover shadow-sm transition-all duration-300 hover:shadow-md"
+                >
+                  <CardContent className="p-5">
+                    <h3 className="font-semibold text-base">{news.title}</h3>
+                    <p className="text-sm text-muted-foreground mt-2 line-clamp-2">
+                      {news.summary}
+                    </p>
+                    <div className="flex justify-end mt-3">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="text-primary hover:bg-primary/5"
+                        onClick={() => openNewsDialog(news)}
+                      >
+                        Read more
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="notices" className="relative mt-0">
+            <div
+              className="flex space-x-4 overflow-x-auto pb-4 scrollbar-hide"
+              ref={noticesCarouselRef}
+              style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+            >
+              {allNotices.map((notice) => (
+                <Card
+                  key={notice.id}
+                  className="flex-shrink-0 w-[320px] event-card-hover shadow-sm transition-all duration-300 hover:shadow-md"
+                >
+                  <CardContent className="p-5">
+                    <h3 className="font-semibold text-base">{notice.title}</h3>
+                    <p className="text-sm text-muted-foreground mt-2 line-clamp-2">
+                      {notice.summary}
+                    </p>
+                    <div className="flex justify-end mt-3">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="text-primary hover:bg-primary/5"
+                        onClick={() => openNoticeDialog(notice)}
+                      >
+                        Details
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </TabsContent>
+        </Tabs>
+      </div>
 
       {/* News Dialog */}
       <Dialog open={isNewsDialogOpen} onOpenChange={setIsNewsDialogOpen}>
@@ -182,18 +306,18 @@ export default function Home() {
         </DialogContent>
       </Dialog>
 
-      {/* Existing code for Upcoming Events */}
-      <div>
-        <div className="flex items-center justify-between mb-4">
+      {/* Upcoming Events section */}
+      <div className="mt-8">
+        <div className="flex items-center justify-between mb-5">
           <h2 className="text-xl font-bold">Upcoming Events</h2>
           <Link
             href="/events"
-            className="text-accent text-sm flex items-center font-medium"
+            className="text-accent text-sm flex items-center font-medium hover:underline transition-all"
           >
             View all <ArrowRight className="h-4 w-4 ml-1" />
           </Link>
         </div>
-        <div className="space-y-4 flex flex-col ">
+        <div className="space-y-5 flex flex-col">
           {[1, 2].map((i) => (
             <Link href={`/events/${i}`} key={i}>
               <Card className="overflow-hidden event-card-hover">
@@ -236,12 +360,16 @@ export default function Home() {
           ))}
         </div>
       </div>
-      <div className="flex justify-center items-center  h-40 pt-20">
-        <h1
-          className={`${anton.className} text-7xl text-center font-extrabold text-[#3a3a3a98]`}
-        >
-          EPIC VIBES <br /> ZERO STRESS
-        </h1>
+
+      {/* EPIC VIBES section */}
+      <div className="flex justify-center items-center h-48 mt-12">
+        <div className="bg-gradient-to-r from-transparent via-secondary/30 to-transparent px-8 py-10 rounded-xl w-full text-center">
+          <h1
+            className={`${anton.className} text-7xl text-center font-extrabold text-[#3a3a3a] opacity-80 tracking-wider`}
+          >
+            EPIC VIBES <br /> ZERO STRESS
+          </h1>
+        </div>
       </div>
     </div>
   );

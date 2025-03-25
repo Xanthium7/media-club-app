@@ -1,13 +1,16 @@
 import type React from "react";
 import type { Metadata } from "next";
-import { Inter, DM_Sans } from "next/font/google";
+import { Inter, Encode_Sans_Expanded } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import BottomNavigation from "@/components/bottom-navigation";
 
 const inter = Inter({ subsets: ["latin"] });
 
-const dm_Sans = DM_Sans({ subsets: ["latin"] });
+const encoded_sans = Encode_Sans_Expanded({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
 
 export const metadata: Metadata = {
   title: "College Events App",
@@ -23,7 +26,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head />
-      <body className={`${dm_Sans.className} min-h-screen flex flex-col`}>
+      <body className={`${encoded_sans.className} min-h-screen flex flex-col`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

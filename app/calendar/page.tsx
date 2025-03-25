@@ -16,7 +16,7 @@ export default function CalendarPage() {
     {
       id: 1,
       title: "Tech Innovation Conference",
-      date: new Date(new Date().getFullYear(), new Date().getMonth(), 23), // Current month, 15th day
+      date: new Date(new Date().getFullYear(), new Date().getMonth(), 25), // Current month, 15th day
       time: "5:00 PM - 8:00 PM",
       location: "Student Center",
       image: "/placeholder.svg?height=80&width=80&text=Tech",

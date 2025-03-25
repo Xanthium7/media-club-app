@@ -42,43 +42,47 @@ export default function EventCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   // Handle automatic slide change
   useEffect(() => {
-    if (isPaused) return;
+    if (isPaused || isTransitioning) return;
 
     const interval = setInterval(() => {
       setDirection(1); // Set direction to forward
+      setIsTransitioning(true);
       setCurrentIndex((prevIndex) => (prevIndex + 1) % events.length);
-    }, 3000);
+
+      // Reset transitioning state after animation completes
+      setTimeout(() => setIsTransitioning(false), 600);
+    }, 4000); // Longer interval for better user experience
 
     return () => clearInterval(interval);
-  }, [isPaused]);
+  }, [isPaused, isTransitioning]);
 
-  // Animation variants
+  // Improved animation variants for seamless transitions
   const slideVariants = {
     enter: (direction: number) => ({
-      x: direction > 0 ? 600 : -600,
-      opacity: 0,
-      scale: 0.95,
+      x: direction > 0 ? "100%" : "-100%",
+      opacity: 0.5,
+      zIndex: 0,
     }),
     center: {
       x: 0,
       opacity: 1,
-      scale: 1,
+      zIndex: 1,
       transition: {
-        x: { type: "spring", stiffness: 300, damping: 30 },
-        opacity: { duration: 0.3 },
-        scale: { duration: 0.4 },
+        x: { type: "spring", stiffness: 300, damping: 30, duration: 0.6 },
+        opacity: { duration: 0.4 },
       },
     },
     exit: (direction: number) => ({
-      x: direction > 0 ? -600 : 600,
-      opacity: 0,
-      scale: 0.95,
+      x: direction > 0 ? "-100%" : "100%",
+      opacity: 0.5,
+      zIndex: 0,
       transition: {
-        x: { type: "spring", stiffness: 300, damping: 30 },
-        opacity: { duration: 0.3 },
+        x: { type: "spring", stiffness: 300, damping: 30, duration: 0.6 },
+        opacity: { duration: 0.4 },
       },
     }),
   };
@@ -90,10 +94,10 @@ export default function EventCarousel() {
       opacity: 1,
       y: 0,
       transition: {
-        delay: 0.2,
-        duration: 0.5,
-        staggerChildren: 0.1,
-        delayChildren: 0.2,
+        delay: 0.1,
+        duration: 0.4,
+        staggerChildren: 0.08,
+        delayChildren: 0.1,
       },
     },
   };
@@ -105,6 +109,18 @@ export default function EventCarousel() {
       y: 0,
       transition: { duration: 0.3 },
     },
+  };
+
+  const handleSlideChange = (index: number) => {
+    if (isTransitioning) return;
+
+    const newDirection = index > currentIndex ? 1 : -1;
+    setDirection(newDirection);
+    setIsTransitioning(true);
+    setCurrentIndex(index);
+
+    // Reset transitioning state after animation completes
+    setTimeout(() => setIsTransitioning(false), 600);
   };
 
   return (
@@ -125,88 +141,87 @@ export default function EventCarousel() {
                 ? "bg-accent scale-100"
                 : "bg-white/30 scale-75 hover:scale-90"
             }`}
-            onClick={() => {
-              setDirection(index > currentIndex ? 1 : -1);
-              setCurrentIndex(index);
-            }}
+            onClick={() => handleSlideChange(index)}
           >
             <span className="sr-only">Go to slide {index + 1}</span>
           </Button>
         ))}
       </div>
 
-      {/* Main carousel */}
-      <AnimatePresence initial={false} custom={direction} mode="wait">
-        <motion.div
-          key={currentIndex}
-          custom={direction}
-          variants={slideVariants}
-          initial="enter"
-          animate="center"
-          exit="exit"
-          className="w-full"
-        >
-          <Link href={`/events/${events[currentIndex].id}`}>
-            <Card className="border-0 overflow-hidden rounded-xl shadow-md">
-              <div className="relative h-52 sm:h-64 w-full event-gradient">
-                <Image
-                  src={events[currentIndex].image || "/placeholder.svg"}
-                  alt={events[currentIndex].title}
-                  fill
-                  className="object-cover mix-blend-overlay transition-transform duration-5000 hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
+      {/* Main carousel - Changed AnimatePresence mode for seamless transition */}
+      <div className="relative h-52 sm:h-64 w-full overflow-hidden">
+        <AnimatePresence initial={false} custom={direction} mode="popLayout">
+          <motion.div
+            key={currentIndex}
+            custom={direction}
+            variants={slideVariants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            className="absolute top-0 left-0 right-0 w-full"
+          >
+            <Link href={`/events/${events[currentIndex].id}`}>
+              <Card className="border-0 overflow-hidden rounded-xl shadow-md">
+                <div className="relative h-52 sm:h-64 w-full event-gradient">
+                  <Image
+                    src={events[currentIndex].image || "/placeholder.svg"}
+                    alt={events[currentIndex].title}
+                    fill
+                    className="object-cover mix-blend-overlay transition-transform duration-5000 hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
 
-                <motion.div
-                  className="absolute bottom-0 left-0 right-0 p-4 text-white"
-                  variants={contentVariants}
-                  initial="hidden"
-                  animate="visible"
-                >
-                  <motion.h3
-                    className="font-bold text-lg md:text-xl"
-                    variants={itemVariants}
-                  >
-                    {events[currentIndex].title}
-                  </motion.h3>
-                  <motion.p
-                    className="text-sm opacity-90"
-                    variants={itemVariants}
-                  >
-                    {events[currentIndex].organizer}
-                  </motion.p>
                   <motion.div
-                    className="flex flex-wrap gap-x-4 gap-y-1 mt-3 pb-3"
+                    className="absolute bottom-0 left-0 right-0 p-4 text-white"
                     variants={contentVariants}
+                    initial="hidden"
+                    animate="visible"
                   >
-                    <motion.div
-                      className="flex items-center text-xs"
+                    <motion.h3
+                      className="font-bold text-lg md:text-xl"
                       variants={itemVariants}
                     >
-                      <Calendar className="h-3.5 w-3.5 mr-2 text-accent" />
-                      <span>{events[currentIndex].date}</span>
-                    </motion.div>
-                    <motion.div
-                      className="flex items-center text-xs"
+                      {events[currentIndex].title}
+                    </motion.h3>
+                    <motion.p
+                      className="text-sm opacity-90"
                       variants={itemVariants}
                     >
-                      <Clock className="h-3.5 w-3.5 mr-2 text-accent" />
-                      <span>{events[currentIndex].time}</span>
-                    </motion.div>
+                      {events[currentIndex].organizer}
+                    </motion.p>
                     <motion.div
-                      className="flex items-center text-xs"
-                      variants={itemVariants}
+                      className="flex flex-wrap gap-x-4 gap-y-1 mt-3 pb-3"
+                      variants={contentVariants}
                     >
-                      <MapPin className="h-3.5 w-3.5 mr-2 text-accent" />
-                      <span>{events[currentIndex].location}</span>
+                      <motion.div
+                        className="flex items-center text-xs"
+                        variants={itemVariants}
+                      >
+                        <Calendar className="h-3.5 w-3.5 mr-2 text-accent" />
+                        <span>{events[currentIndex].date}</span>
+                      </motion.div>
+                      <motion.div
+                        className="flex items-center text-xs"
+                        variants={itemVariants}
+                      >
+                        <Clock className="h-3.5 w-3.5 mr-2 text-accent" />
+                        <span>{events[currentIndex].time}</span>
+                      </motion.div>
+                      <motion.div
+                        className="flex items-center text-xs"
+                        variants={itemVariants}
+                      >
+                        <MapPin className="h-3.5 w-3.5 mr-2 text-accent" />
+                        <span>{events[currentIndex].location}</span>
+                      </motion.div>
                     </motion.div>
                   </motion.div>
-                </motion.div>
-              </div>
-            </Card>
-          </Link>
-        </motion.div>
-      </AnimatePresence>
+                </div>
+              </Card>
+            </Link>
+          </motion.div>
+        </AnimatePresence>
+      </div>
     </div>
   );
 }

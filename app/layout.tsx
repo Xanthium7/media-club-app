@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { Inter, Encode_Sans_Expanded } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
-import BottomNavigation from "@/components/bottom-navigation";
+import NavigationWrapper from "@/components/navigation-wrapper";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -33,8 +33,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <main className="flex-1 pb-16">{children}</main>
-          <BottomNavigation />
+          <NavigationWrapper>{children}</NavigationWrapper>
         </ThemeProvider>
       </body>
     </html>

@@ -1,11 +1,16 @@
-import { Button } from "@/components/ui/button"
-import { Calendar, Clock, Heart, MapPin, Share2, Users } from "lucide-react"
-import Image from "next/image"
-import Link from "next/link"
+import { Button } from "@/components/ui/button";
+import { Calendar, Clock, Heart, MapPin, Share2, Users } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
 
-export default function EventDetailPage({ params }: { params: { id: string } }) {
+export default async function EventDetailPage({
+  params,
+}: {
+  params: { id: string };
+}) {
   // In a real app, you would fetch event data based on the ID
-  const eventId = params.id
+  const { id } = await params;
+  const eventId = id;
 
   return (
     <div className="pb-20">
@@ -51,11 +56,15 @@ export default function EventDetailPage({ params }: { params: { id: string } }) 
             {eventId === "1"
               ? "Tech Innovation Conference"
               : eventId === "2"
-                ? "Annual Music Festival"
-                : "Career Fair 2023"}
+              ? "Annual Music Festival"
+              : "Career Fair 2023"}
           </h1>
           <p className="text-muted-foreground">
-            {eventId === "1" ? "Computer Science Club" : eventId === "2" ? "Music Department" : "Career Services"}
+            {eventId === "1"
+              ? "Computer Science Club"
+              : eventId === "2"
+              ? "Music Department"
+              : "Career Services"}
           </p>
         </div>
 
@@ -65,7 +74,11 @@ export default function EventDetailPage({ params }: { params: { id: string } }) 
             <div>
               <p className="font-medium">Date</p>
               <p className="text-sm text-muted-foreground">
-                {eventId === "1" ? "October 24, 2023" : eventId === "2" ? "November 15, 2023" : "December 5, 2023"}
+                {eventId === "1"
+                  ? "October 24, 2023"
+                  : eventId === "2"
+                  ? "November 15, 2023"
+                  : "December 5, 2023"}
               </p>
             </div>
           </div>
@@ -74,7 +87,11 @@ export default function EventDetailPage({ params }: { params: { id: string } }) 
             <div>
               <p className="font-medium">Time</p>
               <p className="text-sm text-muted-foreground">
-                {eventId === "1" ? "5:00 PM - 8:00 PM" : eventId === "2" ? "7:00 PM - 11:00 PM" : "10:00 AM - 4:00 PM"}
+                {eventId === "1"
+                  ? "5:00 PM - 8:00 PM"
+                  : eventId === "2"
+                  ? "7:00 PM - 11:00 PM"
+                  : "10:00 AM - 4:00 PM"}
               </p>
             </div>
           </div>
@@ -86,8 +103,8 @@ export default function EventDetailPage({ params }: { params: { id: string } }) 
                 {eventId === "1"
                   ? "Student Center, Room 302"
                   : eventId === "2"
-                    ? "Main Auditorium"
-                    : "Main Hall, Building A"}
+                  ? "Main Auditorium"
+                  : "Main Hall, Building A"}
               </p>
             </div>
           </div>
@@ -108,19 +125,24 @@ export default function EventDetailPage({ params }: { params: { id: string } }) 
             {eventId === "1"
               ? "Join us for a day of innovation and technology. The Tech Innovation Conference brings together industry leaders, researchers, and students to discuss the latest trends and advancements in technology. Network with professionals, attend workshops, and learn about cutting-edge research."
               : eventId === "2"
-                ? "The Annual Music Festival is back! Featuring performances from student bands, the college orchestra, and special guest artists. Come enjoy a night of music across various genres, from classical to contemporary. Food and refreshments will be available."
-                : "The Career Fair 2023 is your opportunity to connect with potential employers from various industries. Bring your resume, dress professionally, and be ready to network. Companies will be conducting on-site interviews for internships and full-time positions."}
+              ? "The Annual Music Festival is back! Featuring performances from student bands, the college orchestra, and special guest artists. Come enjoy a night of music across various genres, from classical to contemporary. Food and refreshments will be available."
+              : "The Career Fair 2023 is your opportunity to connect with potential employers from various industries. Bring your resume, dress professionally, and be ready to network. Companies will be conducting on-site interviews for internships and full-time positions."}
           </p>
         </div>
 
         <div className="flex gap-2">
-          <Button className="flex-1 bg-accent text-black hover:bg-accent/90">Register</Button>
-          <Button variant="outline" size="icon" className="border-primary text-primary">
+          <Button className="flex-1 bg-accent text-black hover:bg-accent/90">
+            Register
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="border-primary text-primary"
+          >
             <Share2 className="h-4 w-4" />
           </Button>
         </div>
       </div>
     </div>
-  )
+  );
 }
-

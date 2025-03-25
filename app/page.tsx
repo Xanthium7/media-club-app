@@ -130,7 +130,7 @@ export default function Home() {
           });
         }
       }
-    }, 5000); // Cycle every 5 seconds
+    }, 3000); // Cycle every 3 seconds
 
     return () => clearInterval(interval);
   }, [activeTab]);
@@ -171,7 +171,7 @@ export default function Home() {
           onValueChange={setActiveTab}
         >
           <div className="flex  items-center justify-between mb-5">
-            <TabsList className="bg-secondary rounded-lg">
+            <TabsList className="bg-secondary py-6 rounded-lg">
               <TabsTrigger value="news" className="px-6 py-2.5">
                 News
               </TabsTrigger>
@@ -180,18 +180,20 @@ export default function Home() {
               </TabsTrigger>
             </TabsList>
 
-            <TabsContent value="news" className="m-0 inline-flex">
-              <Link href="/news">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="text-accent   flex  items-center font-medium hover:bg-accent/5"
-                >
-                  View all
-                  <ArrowRight className="h-4 w-4 ml-1" />
-                </Button>
-              </Link>
-            </TabsContent>
+            <div className="ml-auto">
+              <TabsContent value="news" className="m-0 inline-flex">
+                <Link href="/news">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="text-accent flex items-center font-medium hover:bg-accent/5"
+                  >
+                    View all
+                    <ArrowRight className="h-4 w-4 ml-1" />
+                  </Button>
+                </Link>
+              </TabsContent>
+            </div>
 
             <TabsContent value="notices" className="m-0 inline-flex">
               <Link href="/notices">

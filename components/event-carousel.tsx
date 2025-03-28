@@ -16,7 +16,8 @@ const events = [
     date: "Oct 24, 2023",
     time: "5:00 PM - 8:00 PM",
     location: "Student Center",
-    image: "/placeholder.svg?height=200&width=400&text=Tech+Conference",
+    image:
+      "https://i.pinimg.com/736x/35/dc/0e/35dc0e5598759bafa3da64d6675ffb63.jpg",
   },
   {
     id: 2,
@@ -25,16 +26,18 @@ const events = [
     date: "Nov 15, 2023",
     time: "7:00 PM - 11:00 PM",
     location: "Auditorium",
-    image: "/placeholder.svg?height=200&width=400&text=Music+Festival",
+    image:
+      "https://i.pinimg.com/736x/7b/83/48/7b83481a4cf0c574be1e71dd0294121e.jpg",
   },
   {
     id: 3,
-    title: "Career Fair 2023",
-    organizer: "Career Services",
-    date: "Dec 5, 2023",
-    time: "10:00 AM - 4:00 PM",
-    location: "Main Hall",
-    image: "/placeholder.svg?height=200&width=400&text=Career+Fair",
+    title: "End-of-Semester Art Exhibition",
+    organizer: "Art Club",
+    date: "Dec 10, 2023",
+    time: "2:00 PM - 6:00 PM",
+    location: "Art Gallery",
+    image:
+      "https://i.pinimg.com/736x/71/c5/ff/71c5ff07af70b970331bc1a75430c280.jpg",
   },
 ];
 

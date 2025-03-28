@@ -169,13 +169,13 @@ const AuthPage = () => {
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
-              d="M20 40 L40 20 L60 40 L80 20 L60 60 L40 80 L20 60 L40 40 Z"
+              d="M50 15 L65 35 L85 50 L65 65 L50 85 L35 65 L15 50 L35 35 Z"
               stroke="currentColor"
               strokeWidth="6"
             />
           </svg>
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-            <motion.div
+            {/* <motion.div
               className="w-16 h-2 bg-purple-500 rounded-full rotate-45 absolute -top-8 -left-4"
               animate={{
                 opacity: [0.7, 1, 0.7],
@@ -187,13 +187,13 @@ const AuthPage = () => {
                 repeatType: "reverse",
                 ease: "easeInOut",
               }}
-            />
-            <div className="w-12 h-12 bg-gray-300 rounded-full" />
+            /> */}
+            {/* <div className="w-12 h-12 bg-gray-300 rounded-full" /> */}
           </div>
-          <div className="absolute -top-4 -left-4">
+          <div className="absolute -top-4 -left-4 text-purple-300">
             <AnimatedSparkle />
           </div>
-          <div className="absolute bottom-0 -right-8">
+          <div className="absolute bottom-0 -right-8 text-purple-200">
             <AnimatedSparkle delay={1.5} />
           </div>
         </div>
@@ -252,16 +252,6 @@ const AuthPage = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <AnimatedGridPattern
-        numSquares={30}
-        maxOpacity={0.1}
-        duration={3}
-        repeatDelay={1}
-        className={cn(
-          "[mask-image:radial-gradient(500px_circle_at_center,white,transparent)]",
-          "inset-x-0 inset-y-[-50%] h-[200%] skew-y-12"
-        )}
-      />
       <div className="absolute top-6 right-6">
         <button
           onClick={toggleTheme}
@@ -382,21 +372,11 @@ const AuthPage = () => {
     // Login/Signup Step
     <motion.div
       key="auth"
-      className={`flex flex-col h-[100vh] max-h-[100vh] p-6 ${bgColor} ${textColor} overflow-hidden`}
+      className={`flex flex-col relative  h-[100vh] max-h-[100vh] p-6 ${bgColor} ${textColor} overflow-hidden`}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <AnimatedGridPattern
-        numSquares={30}
-        maxOpacity={0.1}
-        duration={3}
-        repeatDelay={1}
-        className={cn(
-          "[mask-image:radial-gradient(500px_circle_at_center,white,transparent)]",
-          "inset-x-0 inset-y-[-50%] h-[200%] skew-y-12"
-        )}
-      />
       <div className="absolute top-6 right-6">
         <button
           onClick={toggleTheme}
@@ -408,189 +388,191 @@ const AuthPage = () => {
           <ThemeToggleIcon isDark={theme === "dark"} />
         </button>
       </div>
-      <div className="flex-1 flex flex-col w-full">
-        <h2 className="text-2xl font-bold mb-6 text-center flex items-center justify-center">
-          Tickets <AnimatedSparkle className="ml-2" />
-        </h2>
-        <div
-          className={`flex mb-8 rounded-full overflow-hidden border ${borderColor} p-1`}
-        >
-          <button
-            className={`flex-1 py-2 px-4 font-medium text-center transition-all duration-300 rounded-full ${
-              activeTab === "login"
-                ? theme === "dark"
-                  ? "bg-purple-500 text-white"
-                  : "bg-purple-600 text-white"
-                : `${tertiaryText} hover:${
-                    theme === "dark" ? "text-purple-500" : "text-pink-600"
-                  }`
-            }`}
-            onClick={() => setActiveTab("login")}
+      <div className="flex-1 flex flex-col w-full justify-center">
+        <div className="flex flex-col   ">
+          <h2 className="text-2xl font-bold mb-6 text-center flex items-center justify-center">
+            Join Up <AnimatedSparkle className="ml-2" />
+          </h2>
+          <div
+            className={`flex mb-8  rounded-full overflow-hidden border ${borderColor} p-1`}
           >
-            Login
-          </button>
-          <button
-            className={`flex-1 py-2 px-4 font-medium text-center transition-all duration-300 rounded-full ${
-              activeTab === "signup"
-                ? theme === "dark"
-                  ? "bg-purple-500 text-white"
-                  : "bg-purple-600 text-white"
-                : `${tertiaryText} hover:${
-                    theme === "dark" ? "text-purple-500" : "text-pink-600"
-                  }`
-            }`}
-            onClick={() => setActiveTab("signup")}
-          >
-            Sign Up
-          </button>
-        </div>
+            <button
+              className={`flex-1 py-2 px-4 font-medium text-center transition-all duration-300 rounded-full ${
+                activeTab === "login"
+                  ? theme === "dark"
+                    ? "bg-purple-500 text-white"
+                    : "bg-purple-600 text-white"
+                  : `${tertiaryText} hover:${
+                      theme === "dark" ? "text-purple-500" : "text-pink-600"
+                    }`
+              }`}
+              onClick={() => setActiveTab("login")}
+            >
+              Login
+            </button>
+            <button
+              className={`flex-1 py-2 px-4 font-medium text-center transition-all duration-300 rounded-full ${
+                activeTab === "signup"
+                  ? theme === "dark"
+                    ? "bg-purple-500 text-white"
+                    : "bg-purple-600 text-white"
+                  : `${tertiaryText} hover:${
+                      theme === "dark" ? "text-purple-500" : "text-pink-600"
+                    }`
+              }`}
+              onClick={() => setActiveTab("signup")}
+            >
+              Sign Up
+            </button>
+          </div>
 
-        <AnimatePresence mode="wait">
-          {activeTab === "login" ? (
-            <motion.div
-              className="flex-1"
-              key="login"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.2 }}
-            >
-              <div className="mb-6">
-                <label className={`block ${secondaryText} mb-2`}>Email</label>
-                <input
-                  type="email"
-                  className={`w-full ${inputBg} border ${borderColor} rounded-md py-3 px-4 focus:outline-none focus:ring-2 ${
-                    theme === "dark"
-                      ? "focus:ring-purple-500"
-                      : "focus:ring-purple-600"
-                  } transition-all duration-200`}
-                  placeholder="Enter your email"
-                />
-              </div>
-              <div className="mb-8">
-                <label className={`block ${secondaryText} mb-2`}>
-                  Password
-                </label>
-                <input
-                  type="password"
-                  className={`w-full ${inputBg} border ${borderColor} rounded-md py-3 px-4 focus:outline-none focus:ring-2 ${
-                    theme === "dark"
-                      ? "focus:ring-purple-500"
-                      : "focus:ring-purple-600"
-                  } transition-all duration-200`}
-                  placeholder="Enter your password"
-                />
-              </div>
-              <motion.button
-                className={`w-full py-4 ${
-                  theme === "dark"
-                    ? "bg-purple-500 hover:bg-pink-400"
-                    : "bg-purple-600 hover:bg-purple-500"
-                } rounded-lg text-white font-semibold mb-8 transition-all duration-300 flex items-center justify-between px-6`}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
+          <AnimatePresence mode="wait">
+            {activeTab === "login" ? (
+              <motion.div
+                className="flex-1"
+                key="login"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.2 }}
               >
-                <span>Login</span>
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M5 12H19M19 12L12 5M19 12L12 19"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
+                <div className="mb-6">
+                  <label className={`block ${secondaryText} mb-2`}>Email</label>
+                  <input
+                    type="email"
+                    className={`w-full ${inputBg} border ${borderColor} rounded-md py-3 px-4 focus:outline-none focus:ring-2 ${
+                      theme === "dark"
+                        ? "focus:ring-purple-500"
+                        : "focus:ring-purple-600"
+                    } transition-all duration-200`}
+                    placeholder="Enter your email"
                   />
-                </svg>
-              </motion.button>
-              <p
-                className={`text-center ${tertiaryText} hover:${
-                  theme === "dark" ? "text-purple-500" : "text-pink-600"
-                } cursor-pointer transition-colors duration-200`}
-              >
-                Forgot your password?
-              </p>
-            </motion.div>
-          ) : (
-            <motion.div
-              className="flex-1"
-              key="signup"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.2 }}
-            >
-              <div className="mb-6">
-                <label className={`block ${secondaryText} mb-2`}>Name</label>
-                <input
-                  type="text"
-                  className={`w-full ${inputBg} border ${borderColor} rounded-md py-3 px-4 focus:outline-none focus:ring-2 ${
-                    theme === "dark"
-                      ? "focus:ring-purple-500"
-                      : "focus:ring-purple-600"
-                  } transition-all duration-200`}
-                  placeholder="Enter your name"
-                />
-              </div>
-              <div className="mb-6">
-                <label className={`block ${secondaryText} mb-2`}>Email</label>
-                <input
-                  type="email"
-                  className={`w-full ${inputBg} border ${borderColor} rounded-md py-3 px-4 focus:outline-none focus:ring-2 ${
-                    theme === "dark"
-                      ? "focus:ring-purple-500"
-                      : "focus:ring-purple-600"
-                  } transition-all duration-200`}
-                  placeholder="Enter your email"
-                />
-              </div>
-              <div className="mb-8">
-                <label className={`block ${secondaryText} mb-2`}>
-                  Password
-                </label>
-                <input
-                  type="password"
-                  className={`w-full ${inputBg} border ${borderColor} rounded-md py-3 px-4 focus:outline-none focus:ring-2 ${
-                    theme === "dark"
-                      ? "focus:ring-purple-500"
-                      : "focus:ring-purple-600"
-                  } transition-all duration-200`}
-                  placeholder="Create a password"
-                />
-              </div>
-              <motion.button
-                className={`w-full py-4 ${
-                  theme === "dark"
-                    ? "bg-purple-500 hover:bg-pink-400"
-                    : "bg-purple-600 hover:bg-purple-500"
-                } rounded-lg text-white font-semibold mb-8 transition-all duration-300 flex items-center justify-between px-6`}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <span>Sign Up</span>
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M5 12H19M19 12L12 5M19 12L12 19"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
+                </div>
+                <div className="mb-8">
+                  <label className={`block ${secondaryText} mb-2`}>
+                    Password
+                  </label>
+                  <input
+                    type="password"
+                    className={`w-full ${inputBg} border ${borderColor} rounded-md py-3 px-4 focus:outline-none focus:ring-2 ${
+                      theme === "dark"
+                        ? "focus:ring-purple-500"
+                        : "focus:ring-purple-600"
+                    } transition-all duration-200`}
+                    placeholder="Enter your password"
                   />
-                </svg>
-              </motion.button>
-            </motion.div>
-          )}
-        </AnimatePresence>
+                </div>
+                <motion.button
+                  className={`w-full py-4 ${
+                    theme === "dark"
+                      ? "bg-purple-500 hover:bg-pink-400"
+                      : "bg-purple-600 hover:bg-purple-500"
+                  } rounded-lg text-white font-semibold mb-8 transition-all duration-300 flex items-center justify-between px-6`}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <span>Login</span>
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M5 12H19M19 12L12 5M19 12L12 19"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </motion.button>
+                <p
+                  className={`text-center ${tertiaryText} hover:${
+                    theme === "dark" ? "text-purple-500" : "text-pink-600"
+                  } cursor-pointer transition-colors duration-200`}
+                >
+                  Forgot your password?
+                </p>
+              </motion.div>
+            ) : (
+              <motion.div
+                className="flex-1"
+                key="signup"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.2 }}
+              >
+                <div className="mb-6">
+                  <label className={`block ${secondaryText} mb-2`}>Name</label>
+                  <input
+                    type="text"
+                    className={`w-full ${inputBg} border ${borderColor} rounded-md py-3 px-4 focus:outline-none focus:ring-2 ${
+                      theme === "dark"
+                        ? "focus:ring-purple-500"
+                        : "focus:ring-purple-600"
+                    } transition-all duration-200`}
+                    placeholder="Enter your name"
+                  />
+                </div>
+                <div className="mb-6">
+                  <label className={`block ${secondaryText} mb-2`}>Email</label>
+                  <input
+                    type="email"
+                    className={`w-full ${inputBg} border ${borderColor} rounded-md py-3 px-4 focus:outline-none focus:ring-2 ${
+                      theme === "dark"
+                        ? "focus:ring-purple-500"
+                        : "focus:ring-purple-600"
+                    } transition-all duration-200`}
+                    placeholder="Enter your email"
+                  />
+                </div>
+                <div className="mb-8">
+                  <label className={`block ${secondaryText} mb-2`}>
+                    Password
+                  </label>
+                  <input
+                    type="password"
+                    className={`w-full ${inputBg} border ${borderColor} rounded-md py-3 px-4 focus:outline-none focus:ring-2 ${
+                      theme === "dark"
+                        ? "focus:ring-purple-500"
+                        : "focus:ring-purple-600"
+                    } transition-all duration-200`}
+                    placeholder="Create a password"
+                  />
+                </div>
+                <motion.button
+                  className={`w-full py-4 ${
+                    theme === "dark"
+                      ? "bg-purple-500 hover:bg-pink-400"
+                      : "bg-purple-600 hover:bg-purple-500"
+                  } rounded-lg text-white font-semibold mb-8 transition-all duration-300 flex items-center justify-between px-6`}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <span>Sign Up</span>
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M5 12H19M19 12L12 5M19 12L12 19"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </motion.button>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
       </div>
       <div className="flex justify-center space-x-2 w-full mb-4">
         {[0, 1, 2].map((step) => (

@@ -41,11 +41,11 @@
     --popover-foreground: 0 0% 98%;
 
     /* Brighter purple in dark mode */
-    --primary: 267 80% 60%;
+    --primary:80 80% 52%;
     --primary-foreground: 0 0% 98%;
 
     /* Brighter neon accent in dark mode */
-    --accent: 85 100% 65%;
+    --accent: 290 91% 55%;
     --accent-foreground: 240 5.9% 10%;
 
     --secondary: 260 15% 15%;

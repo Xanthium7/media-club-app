@@ -1,8 +1,71 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
+
+// Animated Sparkle component with shimmering effect
+const AnimatedSparkle = ({ className = "", delay = 0 }) => (
+  <motion.svg
+    width="16"
+    height="16"
+    viewBox="0 0 16 16"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    className={`inline-block ${className}`}
+    initial={{ scale: 0.8, opacity: 0.7 }}
+    animate={{
+      scale: [0.8, 1.1, 0.9, 1],
+      opacity: [0.7, 1, 0.8, 1],
+      rotate: [0, 5, -5, 0],
+    }}
+    transition={{
+      duration: 3,
+      repeat: Number.POSITIVE_INFINITY,
+      repeatType: "reverse",
+      delay: delay,
+      ease: "easeInOut",
+    }}
+  >
+    <path
+      d="M8 0L9.2 6.8L16 8L9.2 9.2L8 16L6.8 9.2L0 8L6.8 6.8L8 0Z"
+      fill="currentColor"
+    />
+  </motion.svg>
+);
+
+// Theme toggle icon component
+const ThemeToggleIcon = ({ isDark }: { isDark: boolean }) => (
+  <motion.svg
+    width="20"
+    height="20"
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    initial={{ rotate: 0 }}
+    animate={{ rotate: isDark ? 0 : 180 }}
+    transition={{ duration: 0.5 }}
+  >
+    {isDark ? (
+      <path
+        d="M12 3a9 9 0 109 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 01-4.4 2.26 5.403 5.403 0 01-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    ) : (
+      <g>
+        <circle cx="12" cy="12" r="5" stroke="currentColor" strokeWidth="2" />
+        <path
+          d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+        />
+      </g>
+    )}
+  </motion.svg>
+);
 
 const AuthPage = () => {
   const [activeStep, setActiveStep] = useState(0);
@@ -30,9 +93,7 @@ const AuthPage = () => {
     opacity: number;
   }
 
-  interface DirectionalVariant {
-    (direction: number): AnimationProps;
-  }
+  type DirectionalVariant = (direction: number) => AnimationProps;
 
   interface AnimationVariants {
     enter: DirectionalVariant;
@@ -57,15 +118,13 @@ const AuthPage = () => {
   };
 
   // Theme-based styles
-  const bgColor = theme === "dark" ? "bg-gray-900" : "bg-gray-50";
+  const bgColor = theme === "dark" ? "bg-black" : "bg-gray-50";
+  const cardBg = theme === "dark" ? "bg-gray-900" : "bg-white";
   const textColor = theme === "dark" ? "text-white" : "text-gray-900";
-  const cardBg = theme === "dark" ? "bg-gray-800" : "bg-white";
   const borderColor = theme === "dark" ? "border-gray-700" : "border-gray-200";
   const inputBg = theme === "dark" ? "bg-gray-800" : "bg-gray-100";
   const secondaryText = theme === "dark" ? "text-gray-300" : "text-gray-600";
   const tertiaryText = theme === "dark" ? "text-gray-400" : "text-gray-500";
-  const accentColor = "purple-600";
-  const accentText = "purple-500";
 
   // Adjust styles to ensure perfect fitting without scrollability
   const steps = [
@@ -80,38 +139,96 @@ const AuthPage = () => {
       <div className="absolute top-6 right-6">
         <button
           onClick={toggleTheme}
-          className={`p-2 rounded-full ${cardBg} ${borderColor} border`}
+          className={`p-2 rounded-full ${cardBg} ${borderColor} border flex items-center justify-center`}
+          aria-label={
+            theme === "dark" ? "Switch to light mode" : "Switch to dark mode"
+          }
         >
-          {theme === "dark" ? "☀️" : "🌙"}
+          <ThemeToggleIcon isDark={theme === "dark"} />
         </button>
       </div>
       <div className="flex-1 flex flex-col items-center justify-center text-center w-full">
-        <div className={`p-4 rounded-full ${cardBg} mb-8`}>
-          <Image
-            src="/logo.png"
-            alt="Media Club Logo"
-            width={100}
-            height={100}
-            className="mb-2"
-          />
+        <div className="relative mb-12">
+          <svg
+            className="w-32 h-32 text-gray-700"
+            viewBox="0 0 100 100"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M20 40 L40 20 L60 40 L80 20 L60 60 L40 80 L20 60 L40 40 Z"
+              stroke="currentColor"
+              strokeWidth="6"
+            />
+          </svg>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+            <motion.div
+              className="w-16 h-2 bg-pink-500 rounded-full rotate-45 absolute -top-8 -left-4"
+              animate={{
+                opacity: [0.7, 1, 0.7],
+                width: ["4rem", "4.5rem", "4rem"],
+              }}
+              transition={{
+                duration: 3,
+                repeat: Number.POSITIVE_INFINITY,
+                repeatType: "reverse",
+                ease: "easeInOut",
+              }}
+            />
+            <div className="w-12 h-12 bg-gray-300 rounded-full" />
+          </div>
+          <div className="absolute -top-4 -left-4">
+            <AnimatedSparkle />
+          </div>
+          <div className="absolute bottom-0 -right-8">
+            <AnimatedSparkle delay={1.5} />
+          </div>
         </div>
-        <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
-          Welcome to Media Club
-        </h1>
+        <h1 className="text-5xl font-bold mb-4">Your Event Guide 2025</h1>
         <p className={`text-xl ${secondaryText} mb-6`}>
-          Your personal event guide for 2025
-        </p>
-        <p className={`${tertiaryText} max-w-xs`}>
-          Discover, book, and enjoy events near you with our all-in-one platform
+          Discover, book, and enjoy events like never before.
         </p>
       </div>
       <button
         onClick={handleNext}
-        className={`w-full py-4 bg-${accentColor} rounded-lg ${textColor} font-semibold mb-8 relative overflow-hidden group`}
+        className={`w-full py-4 ${
+          theme === "dark"
+            ? "bg-pink-500 hover:bg-pink-400"
+            : "bg-purple-600 hover:bg-purple-500"
+        } rounded-lg text-white font-semibold mb-8 transition-all duration-300 flex items-center justify-between px-6`}
       >
-        <span className="relative z-10">Next</span>
-        <div className="absolute inset-0 h-full w-0 bg-opacity-20 bg-white transition-all duration-300 group-hover:w-full"></div>
+        <span>Discover</span>
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M5 12H19M19 12L12 5M19 12L12 19"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
       </button>
+      <div className="flex justify-center space-x-2 w-full mb-4">
+        {[0, 1, 2].map((step) => (
+          <motion.div
+            key={step}
+            className={`h-1 rounded-full transition-all duration-300 ${
+              step === activeStep ? "bg-pink-500" : "bg-gray-600"
+            }`}
+            animate={{
+              width: step === activeStep ? "2rem" : "1rem",
+              opacity: step === activeStep ? 1 : 0.5,
+            }}
+            transition={{ duration: 0.3 }}
+          />
+        ))}
+      </div>
     </motion.div>,
 
     // App Info Step
@@ -125,126 +242,118 @@ const AuthPage = () => {
       <div className="absolute top-6 right-6">
         <button
           onClick={toggleTheme}
-          className={`p-2 rounded-full ${cardBg} ${borderColor} border`}
+          className={`p-2 rounded-full ${cardBg} ${borderColor} border flex items-center justify-center`}
+          aria-label={
+            theme === "dark" ? "Switch to light mode" : "Switch to dark mode"
+          }
         >
-          {theme === "dark" ? "☀️" : "🌙"}
+          <ThemeToggleIcon isDark={theme === "dark"} />
         </button>
       </div>
       <div className="flex-1 flex flex-col items-center justify-center w-full">
-        <h2 className="text-3xl font-bold mb-8 text-center bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
-          Discover the Experience
+        <h2 className="text-3xl font-bold mb-8 text-center flex items-center">
+          Hello <AnimatedSparkle className="ml-2" />
         </h2>
         <div className="mb-10 w-full space-y-4">
-          <motion.div
-            className={`${cardBg} rounded-xl p-6 border ${borderColor} backdrop-blur-sm`}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-          >
-            <div className="flex items-start">
-              <div
-                className={`p-3 rounded-full bg-${accentColor} bg-opacity-20 mr-4`}
-              >
-                <svg
-                  className="w-6 h-6 text-purple-500"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
+          {[
+            {
+              icon: "M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z",
+              title: "Discover Events",
+              description: "Find exciting events happening around you",
+            },
+            {
+              icon: "M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z",
+              title: "Book Tickets",
+              description: "Secure your spot with our simple booking system",
+            },
+            {
+              icon: "M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9",
+              title: "Get Updates",
+              description: "Stay informed with real-time notifications",
+            },
+          ].map((feature, index) => (
+            <motion.div
+              key={index}
+              className={`${cardBg} rounded-xl p-6 border border-gray-800`}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 * index }}
+              whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
+            >
+              <div className="flex items-start">
+                <div
+                  className={`p-3 rounded-full ${
+                    theme === "dark"
+                      ? "bg-purple-500 bg-opacity-20"
+                      : "bg-pink-600 bg-opacity-20"
+                  } mr-4`}
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                  />
-                </svg>
+                  <svg
+                    className={`w-6 h-6 ${
+                      theme === "dark" ? "text-pink-500" : "text-purple-600"
+                    }`}
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d={feature.icon}
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold mb-2">{feature.title}</h3>
+                  <p className={secondaryText}>{feature.description}</p>
+                </div>
               </div>
-              <div>
-                <h3 className="text-xl font-bold mb-2">Discover Events</h3>
-                <p className={secondaryText}>
-                  Find exciting events happening around you with just a few taps
-                </p>
-              </div>
-            </div>
-          </motion.div>
-
-          <motion.div
-            className={`${cardBg} rounded-xl p-6 border ${borderColor} backdrop-blur-sm`}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-          >
-            <div className="flex items-start">
-              <div
-                className={`p-3 rounded-full bg-${accentColor} bg-opacity-20 mr-4`}
-              >
-                <svg
-                  className="w-6 h-6 text-purple-500"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"
-                  />
-                </svg>
-              </div>
-              <div>
-                <h3 className="text-xl font-bold mb-2">Book Tickets</h3>
-                <p className={secondaryText}>
-                  Secure your spot at events with our simple booking system
-                </p>
-              </div>
-            </div>
-          </motion.div>
-
-          <motion.div
-            className={`${cardBg} rounded-xl p-6 border ${borderColor} backdrop-blur-sm`}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-          >
-            <div className="flex items-start">
-              <div
-                className={`p-3 rounded-full bg-${accentColor} bg-opacity-20 mr-4`}
-              >
-                <svg
-                  className="w-6 h-6 text-purple-500"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
-                  />
-                </svg>
-              </div>
-              <div>
-                <h3 className="text-xl font-bold mb-2">Get Updates</h3>
-                <p className={secondaryText}>
-                  Stay informed with real-time notifications about your events
-                </p>
-              </div>
-            </div>
-          </motion.div>
+            </motion.div>
+          ))}
         </div>
       </div>
       <button
         onClick={handleNext}
-        className={`w-full py-4 bg-${accentColor} rounded-lg ${textColor} font-semibold mb-8 relative overflow-hidden group`}
+        className={`w-full py-4 ${
+          theme === "dark"
+            ? "bg-pink-500 hover:bg-pink-400"
+            : "bg-purple-600 hover:bg-purple-500"
+        } rounded-lg text-white font-semibold mb-8 transition-all duration-300 flex items-center justify-between px-6`}
       >
-        <span className="relative z-10">Next</span>
-        <div className="absolute inset-0 h-full w-0 bg-opacity-20 bg-white transition-all duration-300 group-hover:w-full"></div>
+        <span>Continue</span>
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M5 12H19M19 12L12 5M19 12L12 19"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
       </button>
+      <div className="flex justify-center space-x-2 w-full mb-4">
+        {[0, 1, 2].map((step) => (
+          <motion.div
+            key={step}
+            className={`h-1 rounded-full transition-all duration-300 ${
+              step === activeStep ? "bg-pink-500" : "bg-gray-600"
+            }`}
+            animate={{
+              width: step === activeStep ? "2rem" : "1rem",
+              opacity: step === activeStep ? 1 : 0.5,
+            }}
+            transition={{ duration: 0.3 }}
+          />
+        ))}
+      </div>
     </motion.div>,
 
     // Login/Signup Step
@@ -258,33 +367,44 @@ const AuthPage = () => {
       <div className="absolute top-6 right-6">
         <button
           onClick={toggleTheme}
-          className={`p-2 rounded-full ${cardBg} ${borderColor} border`}
+          className={`p-2 rounded-full ${cardBg} ${borderColor} border flex items-center justify-center`}
+          aria-label={
+            theme === "dark" ? "Switch to light mode" : "Switch to dark mode"
+          }
         >
-          {theme === "dark" ? "☀️" : "🌙"}
+          <ThemeToggleIcon isDark={theme === "dark"} />
         </button>
       </div>
       <div className="flex-1 flex flex-col w-full">
-        <h2 className="text-2xl font-bold mb-6 text-center">
-          Join the <span className={`text-${accentText}`}>Community</span>
+        <h2 className="text-2xl font-bold mb-6 text-center flex items-center justify-center">
+          Tickets <AnimatedSparkle className="ml-2" />
         </h2>
         <div
-          className={`flex mb-8 border-b ${borderColor} rounded-t-lg overflow-hidden`}
+          className={`flex mb-8 rounded-full overflow-hidden border ${borderColor} p-1`}
         >
           <button
-            className={`flex-1 py-4 font-semibold text-center transition-colors duration-300 ${
+            className={`flex-1 py-2 px-4 font-medium text-center transition-all duration-300 rounded-full ${
               activeTab === "login"
-                ? `text-${accentText} border-b-2 border-${accentText} ${cardBg}`
-                : `${tertiaryText} hover:text-${accentText}`
+                ? theme === "dark"
+                  ? "bg-pink-500 text-white"
+                  : "bg-purple-600 text-white"
+                : `${tertiaryText} hover:${
+                    theme === "dark" ? "text-purple-500" : "text-pink-600"
+                  }`
             }`}
             onClick={() => setActiveTab("login")}
           >
             Login
           </button>
           <button
-            className={`flex-1 py-4 font-semibold text-center transition-colors duration-300 ${
+            className={`flex-1 py-2 px-4 font-medium text-center transition-all duration-300 rounded-full ${
               activeTab === "signup"
-                ? `text-${accentText} border-b-2 border-${accentText} ${cardBg}`
-                : `${tertiaryText} hover:text-${accentText}`
+                ? theme === "dark"
+                  ? "bg-pink-500 text-white"
+                  : "bg-purple-600 text-white"
+                : `${tertiaryText} hover:${
+                    theme === "dark" ? "text-purple-500" : "text-pink-600"
+                  }`
             }`}
             onClick={() => setActiveTab("signup")}
           >
@@ -306,7 +426,11 @@ const AuthPage = () => {
                 <label className={`block ${secondaryText} mb-2`}>Email</label>
                 <input
                   type="email"
-                  className={`w-full ${inputBg} border ${borderColor} rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-${accentText} transition-all duration-200`}
+                  className={`w-full ${inputBg} border ${borderColor} rounded-full py-3 px-4 focus:outline-none focus:ring-2 ${
+                    theme === "dark"
+                      ? "focus:ring-pink-500"
+                      : "focus:ring-purple-600"
+                  } transition-all duration-200`}
                   placeholder="Enter your email"
                 />
               </div>
@@ -316,18 +440,44 @@ const AuthPage = () => {
                 </label>
                 <input
                   type="password"
-                  className={`w-full ${inputBg} border ${borderColor} rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-${accentText} transition-all duration-200`}
+                  className={`w-full ${inputBg} border ${borderColor} rounded-full py-3 px-4 focus:outline-none focus:ring-2 ${
+                    theme === "dark"
+                      ? "focus:ring-pink-500"
+                      : "focus:ring-purple-600"
+                  } transition-all duration-200`}
                   placeholder="Enter your password"
                 />
               </div>
-              <button
-                className={`w-full py-4 bg-${accentColor} rounded-lg ${textColor} font-semibold mb-4 relative overflow-hidden group`}
+              <motion.button
+                className={`w-full py-4 ${
+                  theme === "dark"
+                    ? "bg-pink-500 hover:bg-pink-400"
+                    : "bg-purple-600 hover:bg-purple-500"
+                } rounded-lg text-white font-semibold mb-8 transition-all duration-300 flex items-center justify-between px-6`}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
               >
-                <span className="relative z-10">Login</span>
-                <div className="absolute inset-0 h-full w-0 bg-opacity-20 bg-white transition-all duration-300 group-hover:w-full"></div>
-              </button>
+                <span>Login</span>
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M5 12H19M19 12L12 5M19 12L12 19"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </motion.button>
               <p
-                className={`text-center ${tertiaryText} hover:text-${accentText} cursor-pointer transition-colors duration-200`}
+                className={`text-center ${tertiaryText} hover:${
+                  theme === "dark" ? "text-purple-500" : "text-pink-600"
+                } cursor-pointer transition-colors duration-200`}
               >
                 Forgot your password?
               </p>
@@ -345,7 +495,11 @@ const AuthPage = () => {
                 <label className={`block ${secondaryText} mb-2`}>Name</label>
                 <input
                   type="text"
-                  className={`w-full ${inputBg} border ${borderColor} rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-${accentText} transition-all duration-200`}
+                  className={`w-full ${inputBg} border ${borderColor} rounded-full py-3 px-4 focus:outline-none focus:ring-2 ${
+                    theme === "dark"
+                      ? "focus:ring-pink-500"
+                      : "focus:ring-purple-600"
+                  } transition-all duration-200`}
                   placeholder="Enter your name"
                 />
               </div>
@@ -353,7 +507,11 @@ const AuthPage = () => {
                 <label className={`block ${secondaryText} mb-2`}>Email</label>
                 <input
                   type="email"
-                  className={`w-full ${inputBg} border ${borderColor} rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-${accentText} transition-all duration-200`}
+                  className={`w-full ${inputBg} border ${borderColor} rounded-full py-3 px-4 focus:outline-none focus:ring-2 ${
+                    theme === "dark"
+                      ? "focus:ring-pink-500"
+                      : "focus:ring-purple-600"
+                  } transition-all duration-200`}
                   placeholder="Enter your email"
                 />
               </div>
@@ -363,19 +521,58 @@ const AuthPage = () => {
                 </label>
                 <input
                   type="password"
-                  className={`w-full ${inputBg} border ${borderColor} rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-${accentText} transition-all duration-200`}
+                  className={`w-full ${inputBg} border ${borderColor} rounded-full py-3 px-4 focus:outline-none focus:ring-2 ${
+                    theme === "dark"
+                      ? "focus:ring-pink-500"
+                      : "focus:ring-purple-600"
+                  } transition-all duration-200`}
                   placeholder="Create a password"
                 />
               </div>
-              <button
-                className={`w-full py-4 bg-${accentColor} rounded-lg ${textColor} font-semibold mb-4 relative overflow-hidden group`}
+              <motion.button
+                className={`w-full py-4 ${
+                  theme === "dark"
+                    ? "bg-pink-500 hover:bg-pink-400"
+                    : "bg-purple-600 hover:bg-purple-500"
+                } rounded-lg text-white font-semibold mb-8 transition-all duration-300 flex items-center justify-between px-6`}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
               >
-                <span className="relative z-10">Sign Up</span>
-                <div className="absolute inset-0 h-full w-0 bg-opacity-20 bg-white transition-all duration-300 group-hover:w-full"></div>
-              </button>
+                <span>Sign Up</span>
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M5 12H19M19 12L12 5M19 12L12 19"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </motion.button>
             </motion.div>
           )}
         </AnimatePresence>
+      </div>
+      <div className="flex justify-center space-x-2 w-full mb-4">
+        {[0, 1, 2].map((step) => (
+          <motion.div
+            key={step}
+            className={`h-1 rounded-full transition-all duration-300 ${
+              step === activeStep ? "bg-pink-500" : "bg-gray-600"
+            }`}
+            animate={{
+              width: step === activeStep ? "2rem" : "1rem",
+              opacity: step === activeStep ? 1 : 0.5,
+            }}
+            transition={{ duration: 0.3 }}
+          />
+        ))}
       </div>
     </motion.div>,
   ];

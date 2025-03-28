@@ -25,7 +25,7 @@ import { use } from "react";
 export default function ProfilePage() {
   // Mock user data
   const user = {
-    username: "MrPotato",
+    username: "Adhitya K",
     firstName: "Alex",
     lastName: "Johnson",
     email: "alex.johnson@college.edu",

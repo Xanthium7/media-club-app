@@ -13,13 +13,17 @@ import { ArrowRight, Calendar, Clock, MapPin } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import EventCarousel from "@/components/event-carousel";
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import { Anton } from "next/font/google";
+import { Marquee } from "@/components/magicui/marquee";
 
 const anton = Anton({
   subsets: ["latin"],
   weight: ["400"],
 });
+
+const important_information_for_marq =
+  "Semester registration for students of S4 and S6 is currently open";
 
 // Sample news data - adding more items for cycling
 const newsData = [
@@ -90,8 +94,6 @@ export default function Home() {
   const [isNoticeDialogOpen, setIsNoticeDialogOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<any>(null);
   const [activeTab, setActiveTab] = useState("news");
-  const newsCarouselRef = useRef<HTMLDivElement>(null);
-  const noticesCarouselRef = useRef<HTMLDivElement>(null);
 
   // Get all news and notices for cycling
   const allNews = newsData;
@@ -106,34 +108,6 @@ export default function Home() {
     setSelectedItem(notice);
     setIsNoticeDialogOpen(true);
   };
-
-  // Setup auto-cycling for carousels
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const currentCarouselRef =
-        activeTab === "news" ? newsCarouselRef : noticesCarouselRef;
-
-      if (currentCarouselRef.current) {
-        const scrollAmount = 320; // Width of a card
-        const maxScroll =
-          currentCarouselRef.current.scrollWidth -
-          currentCarouselRef.current.clientWidth;
-        const currentScroll = currentCarouselRef.current.scrollLeft;
-
-        // If we're near the end, jump back to start, otherwise scroll by one card
-        if (currentScroll + scrollAmount > maxScroll) {
-          currentCarouselRef.current.scrollTo({ left: 0, behavior: "smooth" });
-        } else {
-          currentCarouselRef.current.scrollBy({
-            left: scrollAmount,
-            behavior: "smooth",
-          });
-        }
-      }
-    }, 3000); // Cycle every 3 seconds
-
-    return () => clearInterval(interval);
-  }, [activeTab]);
 
   return (
     <div className="container px-6 py-8 space-y-10 pb-20 max-w-5xl mx-auto">
@@ -162,8 +136,14 @@ export default function Home() {
           <EventCarousel />
         </div>
       </div>
+      <Marquee className="bg-black text-white/50 py-2 shadow-md border-t-[1px] border-b-[1px] border-[#292929]">
+        <div className="text-center text-sm font-medium uppercase tracking-wide">
+          {important_information_for_marq}
+          <span className="pl-3">∘</span>
+        </div>
+      </Marquee>
 
-      {/* Tabs section with auto-cycling carousels */}
+      {/* Tabs section with Marquee carousels */}
       <div className="mt-8">
         <Tabs
           defaultValue="news"
@@ -186,7 +166,7 @@ export default function Home() {
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="text-accent flex items-center font-medium hover:bg-accent/5"
+                    className="text-accent flex items-center font-medium hover:bg-transparent hover:text-accent/50"
                   >
                     View all
                     <ArrowRight className="h-4 w-4 ml-1" />
@@ -200,7 +180,7 @@ export default function Home() {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="text-accent flex items-center font-medium hover:bg-accent/5"
+                  className="text-accent flex items-center font-medium hover:bg-transparent hover:text-accent/50"
                 >
                   View all
                   <ArrowRight className="h-4 w-4 ml-1" />
@@ -210,67 +190,65 @@ export default function Home() {
           </div>
 
           <TabsContent value="news" className="relative mt-0">
-            <div
-              className="flex space-x-4 overflow-x-auto pb-4 scrollbar-hide"
-              ref={newsCarouselRef}
-              style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-            >
+            <Marquee className="pb-4 [--duration:20s]" pauseOnHover>
               {allNews.map((news) => (
-                <Card
-                  key={news.id}
-                  className="flex-shrink-0 w-[320px] event-card-hover shadow-sm transition-all duration-300 hover:shadow-md"
-                >
-                  <CardContent className="p-5">
-                    <h3 className="font-semibold text-base">{news.title}</h3>
-                    <p className="text-sm text-muted-foreground mt-2 line-clamp-2">
-                      {news.summary}
-                    </p>
-                    <div className="flex justify-end mt-3">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="text-primary hover:bg-primary/5"
-                        onClick={() => openNewsDialog(news)}
-                      >
-                        Read more
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
+                <div key={news.id} className="mx-2">
+                  <Card className="flex-shrink-0 w-[320px] h-[180px] event-card-hover shadow-sm transition-all duration-300 hover:shadow-md">
+                    <CardContent className="p-5 flex flex-col justify-between h-full">
+                      <div>
+                        <h3 className="font-semibold text-base line-clamp-1">
+                          {news.title}
+                        </h3>
+                        <p className="text-sm text-muted-foreground mt-2 line-clamp-2">
+                          {news.summary}
+                        </p>
+                      </div>
+                      <div className="flex justify-end mt-3">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="text-primary hover:bg-primary/5"
+                          onClick={() => openNewsDialog(news)}
+                        >
+                          Read more
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
               ))}
-            </div>
+            </Marquee>
           </TabsContent>
 
           <TabsContent value="notices" className="relative mt-0">
-            <div
-              className="flex space-x-4 overflow-x-auto pb-4 scrollbar-hide"
-              ref={noticesCarouselRef}
-              style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-            >
+            <Marquee className="pb-4 [--duration:20s]" pauseOnHover>
               {allNotices.map((notice) => (
-                <Card
-                  key={notice.id}
-                  className="flex-shrink-0 w-[320px] event-card-hover shadow-sm transition-all duration-300 hover:shadow-md"
-                >
-                  <CardContent className="p-5">
-                    <h3 className="font-semibold text-base">{notice.title}</h3>
-                    <p className="text-sm text-muted-foreground mt-2 line-clamp-2">
-                      {notice.summary}
-                    </p>
-                    <div className="flex justify-end mt-3">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="text-primary hover:bg-primary/5"
-                        onClick={() => openNoticeDialog(notice)}
-                      >
-                        Details
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
+                <div key={notice.id} className="mx-2">
+                  <Card className="flex-shrink-0 w-[320px] h-[180px] event-card-hover shadow-sm transition-all duration-300 hover:shadow-md">
+                    <CardContent className="p-5 flex flex-col justify-between h-full">
+                      <div>
+                        <h3 className="font-semibold text-base line-clamp-1">
+                          {notice.title}
+                        </h3>
+                        <p className="text-sm text-muted-foreground mt-2 line-clamp-2">
+                          {notice.summary}
+                        </p>
+                      </div>
+                      <div className="flex justify-end mt-3">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="text-primary hover:bg-primary/5"
+                          onClick={() => openNoticeDialog(notice)}
+                        >
+                          Details
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
               ))}
-            </div>
+            </Marquee>
           </TabsContent>
         </Tabs>
       </div>
@@ -314,7 +292,7 @@ export default function Home() {
           <h2 className="text-xl font-bold">Upcoming Events</h2>
           <Link
             href="/events"
-            className="text-accent text-sm flex items-center font-medium hover:underline transition-all"
+            className="text-accent text-sm flex items-center font-medium hover:bg-transparent hover:text-accent/50 duration-100"
           >
             View all <ArrowRight className="h-4 w-4 ml-1" />
           </Link>
@@ -363,9 +341,9 @@ export default function Home() {
         </div>
       </div>
 
-      {/* EPIC VIBES section */}
+      {/* FOOTER section */}
       <div className="flex justify-center items-center h-48 mt-12">
-        <div className="bg-gradient-to-r from-transparent via-secondary/30 to-transparent px-8 py-10 rounded-xl w-full text-center">
+        <div className="px-8 py-10 rounded-xl w-full text-center">
           <h1
             className={`${anton.className} text-7xl text-center font-extrabold text-[#3a3a3a] opacity-80 tracking-wider`}
           >

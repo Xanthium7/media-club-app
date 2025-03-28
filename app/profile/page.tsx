@@ -48,7 +48,7 @@ export default function ProfilePage() {
       </div>
 
       <div className="flex flex-col items-center text-center">
-        <Avatar className="h-24 w-24 border-4 border-primary">
+        <Avatar className="h-24 w-24 border-4 border-accent/50">
           <AvatarImage
             src={user.avatar}
             alt={`${user.firstName} ${user.lastName}`}
@@ -213,7 +213,7 @@ export default function ProfilePage() {
 
       <Button
         variant="outline"
-        className="w-full flex items-center gap-2 border-primary text-primary"
+        className="w-full flex items-center gap-2 border-accent text-accent hover:bg-accent/50 hover:text-white/80"
       >
         <LogOut className="h-4 w-4" />
         Sign Out

@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { AnimatedGridPattern } from "@/components/magicui/animated-grid-pattern";
+import { cn } from "@/lib/utils";
 
 // Animated Sparkle component with shimmering effect
 const AnimatedSparkle = ({ className = "", delay = 0 }) => (
@@ -123,19 +125,30 @@ const AuthPage = () => {
   const textColor = theme === "dark" ? "text-white" : "text-gray-900";
   const borderColor = theme === "dark" ? "border-gray-700" : "border-gray-200";
   const inputBg = theme === "dark" ? "bg-gray-800" : "bg-gray-100";
-  const secondaryText = theme === "dark" ? "text-gray-300" : "text-gray-600";
-  const tertiaryText = theme === "dark" ? "text-gray-400" : "text-gray-500";
+  const secondaryText = theme === "dark" ? "text-gray-300" : "text-gray-700";
+  const tertiaryText = theme === "dark" ? "text-gray-400" : "text-gray-600";
 
   // Adjust styles to ensure perfect fitting without scrollability
   const steps = [
     // Welcome Step
     <motion.div
       key="welcome"
-      className={`flex flex-col items-center justify-between h-[100vh] max-h-[100vh] p-6 ${bgColor} ${textColor} overflow-hidden`}
+      className={`flex flex-col items-center relative justify-between h-[100vh] max-h-[100vh] p-6 ${bgColor} ${textColor} overflow-hidden`}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
+      <AnimatedGridPattern
+        numSquares={30}
+        maxOpacity={0.1}
+        duration={3}
+        repeatDelay={1}
+        className={cn(
+          "[mask-image:radial-gradient(500px_circle_at_center,white,transparent)]",
+          "inset-x-0 inset-y-[-50%] h-[200%] skew-y-12"
+        )}
+      />
+
       <div className="absolute top-6 right-6">
         <button
           onClick={toggleTheme}
@@ -163,7 +176,7 @@ const AuthPage = () => {
           </svg>
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
             <motion.div
-              className="w-16 h-2 bg-pink-500 rounded-full rotate-45 absolute -top-8 -left-4"
+              className="w-16 h-2 bg-purple-500 rounded-full rotate-45 absolute -top-8 -left-4"
               animate={{
                 opacity: [0.7, 1, 0.7],
                 width: ["4rem", "4.5rem", "4rem"],
@@ -193,7 +206,7 @@ const AuthPage = () => {
         onClick={handleNext}
         className={`w-full py-4 ${
           theme === "dark"
-            ? "bg-pink-500 hover:bg-pink-400"
+            ? "bg-purple-500 hover:bg-pink-400"
             : "bg-purple-600 hover:bg-purple-500"
         } rounded-lg text-white font-semibold mb-8 transition-all duration-300 flex items-center justify-between px-6`}
       >
@@ -219,7 +232,7 @@ const AuthPage = () => {
           <motion.div
             key={step}
             className={`h-1 rounded-full transition-all duration-300 ${
-              step === activeStep ? "bg-pink-500" : "bg-gray-600"
+              step === activeStep ? "bg-purple-500" : "bg-gray-600"
             }`}
             animate={{
               width: step === activeStep ? "2rem" : "1rem",
@@ -234,11 +247,21 @@ const AuthPage = () => {
     // App Info Step
     <motion.div
       key="info"
-      className={`flex flex-col items-center justify-between h-[100vh] max-h-[100vh] p-6 ${bgColor} ${textColor} overflow-hidden`}
+      className={`flex flex-col items-center relative justify-between h-[100vh] max-h-[100vh] p-6 ${bgColor} ${textColor} overflow-hidden`}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
+      <AnimatedGridPattern
+        numSquares={30}
+        maxOpacity={0.1}
+        duration={3}
+        repeatDelay={1}
+        className={cn(
+          "[mask-image:radial-gradient(500px_circle_at_center,white,transparent)]",
+          "inset-x-0 inset-y-[-50%] h-[200%] skew-y-12"
+        )}
+      />
       <div className="absolute top-6 right-6">
         <button
           onClick={toggleTheme}
@@ -274,13 +297,13 @@ const AuthPage = () => {
           ].map((feature, index) => (
             <motion.div
               key={index}
-              className={`${cardBg} rounded-xl p-6 border border-gray-800`}
+              className={`${cardBg} rounded-xl p-6 border  border-gray-800 z-10`}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 * index }}
               whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
             >
-              <div className="flex items-start">
+              <div className="flex items-start ">
                 <div
                   className={`p-3 rounded-full ${
                     theme === "dark"
@@ -290,7 +313,7 @@ const AuthPage = () => {
                 >
                   <svg
                     className={`w-6 h-6 ${
-                      theme === "dark" ? "text-pink-500" : "text-purple-600"
+                      theme === "dark" ? "text-purple-500" : "text-purple-600"
                     }`}
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -318,7 +341,7 @@ const AuthPage = () => {
         onClick={handleNext}
         className={`w-full py-4 ${
           theme === "dark"
-            ? "bg-pink-500 hover:bg-pink-400"
+            ? "bg-purple-500 hover:bg-pink-400"
             : "bg-purple-600 hover:bg-purple-500"
         } rounded-lg text-white font-semibold mb-8 transition-all duration-300 flex items-center justify-between px-6`}
       >
@@ -344,7 +367,7 @@ const AuthPage = () => {
           <motion.div
             key={step}
             className={`h-1 rounded-full transition-all duration-300 ${
-              step === activeStep ? "bg-pink-500" : "bg-gray-600"
+              step === activeStep ? "bg-purple-500" : "bg-gray-600"
             }`}
             animate={{
               width: step === activeStep ? "2rem" : "1rem",
@@ -364,6 +387,16 @@ const AuthPage = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
+      <AnimatedGridPattern
+        numSquares={30}
+        maxOpacity={0.1}
+        duration={3}
+        repeatDelay={1}
+        className={cn(
+          "[mask-image:radial-gradient(500px_circle_at_center,white,transparent)]",
+          "inset-x-0 inset-y-[-50%] h-[200%] skew-y-12"
+        )}
+      />
       <div className="absolute top-6 right-6">
         <button
           onClick={toggleTheme}
@@ -386,7 +419,7 @@ const AuthPage = () => {
             className={`flex-1 py-2 px-4 font-medium text-center transition-all duration-300 rounded-full ${
               activeTab === "login"
                 ? theme === "dark"
-                  ? "bg-pink-500 text-white"
+                  ? "bg-purple-500 text-white"
                   : "bg-purple-600 text-white"
                 : `${tertiaryText} hover:${
                     theme === "dark" ? "text-purple-500" : "text-pink-600"
@@ -400,7 +433,7 @@ const AuthPage = () => {
             className={`flex-1 py-2 px-4 font-medium text-center transition-all duration-300 rounded-full ${
               activeTab === "signup"
                 ? theme === "dark"
-                  ? "bg-pink-500 text-white"
+                  ? "bg-purple-500 text-white"
                   : "bg-purple-600 text-white"
                 : `${tertiaryText} hover:${
                     theme === "dark" ? "text-purple-500" : "text-pink-600"
@@ -426,9 +459,9 @@ const AuthPage = () => {
                 <label className={`block ${secondaryText} mb-2`}>Email</label>
                 <input
                   type="email"
-                  className={`w-full ${inputBg} border ${borderColor} rounded-full py-3 px-4 focus:outline-none focus:ring-2 ${
+                  className={`w-full ${inputBg} border ${borderColor} rounded-md py-3 px-4 focus:outline-none focus:ring-2 ${
                     theme === "dark"
-                      ? "focus:ring-pink-500"
+                      ? "focus:ring-purple-500"
                       : "focus:ring-purple-600"
                   } transition-all duration-200`}
                   placeholder="Enter your email"
@@ -440,9 +473,9 @@ const AuthPage = () => {
                 </label>
                 <input
                   type="password"
-                  className={`w-full ${inputBg} border ${borderColor} rounded-full py-3 px-4 focus:outline-none focus:ring-2 ${
+                  className={`w-full ${inputBg} border ${borderColor} rounded-md py-3 px-4 focus:outline-none focus:ring-2 ${
                     theme === "dark"
-                      ? "focus:ring-pink-500"
+                      ? "focus:ring-purple-500"
                       : "focus:ring-purple-600"
                   } transition-all duration-200`}
                   placeholder="Enter your password"
@@ -451,7 +484,7 @@ const AuthPage = () => {
               <motion.button
                 className={`w-full py-4 ${
                   theme === "dark"
-                    ? "bg-pink-500 hover:bg-pink-400"
+                    ? "bg-purple-500 hover:bg-pink-400"
                     : "bg-purple-600 hover:bg-purple-500"
                 } rounded-lg text-white font-semibold mb-8 transition-all duration-300 flex items-center justify-between px-6`}
                 whileHover={{ scale: 1.02 }}
@@ -495,9 +528,9 @@ const AuthPage = () => {
                 <label className={`block ${secondaryText} mb-2`}>Name</label>
                 <input
                   type="text"
-                  className={`w-full ${inputBg} border ${borderColor} rounded-full py-3 px-4 focus:outline-none focus:ring-2 ${
+                  className={`w-full ${inputBg} border ${borderColor} rounded-md py-3 px-4 focus:outline-none focus:ring-2 ${
                     theme === "dark"
-                      ? "focus:ring-pink-500"
+                      ? "focus:ring-purple-500"
                       : "focus:ring-purple-600"
                   } transition-all duration-200`}
                   placeholder="Enter your name"
@@ -507,9 +540,9 @@ const AuthPage = () => {
                 <label className={`block ${secondaryText} mb-2`}>Email</label>
                 <input
                   type="email"
-                  className={`w-full ${inputBg} border ${borderColor} rounded-full py-3 px-4 focus:outline-none focus:ring-2 ${
+                  className={`w-full ${inputBg} border ${borderColor} rounded-md py-3 px-4 focus:outline-none focus:ring-2 ${
                     theme === "dark"
-                      ? "focus:ring-pink-500"
+                      ? "focus:ring-purple-500"
                       : "focus:ring-purple-600"
                   } transition-all duration-200`}
                   placeholder="Enter your email"
@@ -521,9 +554,9 @@ const AuthPage = () => {
                 </label>
                 <input
                   type="password"
-                  className={`w-full ${inputBg} border ${borderColor} rounded-full py-3 px-4 focus:outline-none focus:ring-2 ${
+                  className={`w-full ${inputBg} border ${borderColor} rounded-md py-3 px-4 focus:outline-none focus:ring-2 ${
                     theme === "dark"
-                      ? "focus:ring-pink-500"
+                      ? "focus:ring-purple-500"
                       : "focus:ring-purple-600"
                   } transition-all duration-200`}
                   placeholder="Create a password"
@@ -532,7 +565,7 @@ const AuthPage = () => {
               <motion.button
                 className={`w-full py-4 ${
                   theme === "dark"
-                    ? "bg-pink-500 hover:bg-pink-400"
+                    ? "bg-purple-500 hover:bg-pink-400"
                     : "bg-purple-600 hover:bg-purple-500"
                 } rounded-lg text-white font-semibold mb-8 transition-all duration-300 flex items-center justify-between px-6`}
                 whileHover={{ scale: 1.02 }}
@@ -564,7 +597,7 @@ const AuthPage = () => {
           <motion.div
             key={step}
             className={`h-1 rounded-full transition-all duration-300 ${
-              step === activeStep ? "bg-pink-500" : "bg-gray-600"
+              step === activeStep ? "bg-purple-500" : "bg-gray-600"
             }`}
             animate={{
               width: step === activeStep ? "2rem" : "1rem",

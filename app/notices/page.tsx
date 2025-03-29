@@ -74,7 +74,7 @@ export default function NoticesPage() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedNotice, setSelectedNotice] = useState<any>(null);
 
-  // Sort notices by importance only
+  // This sorting already puts high importance notices at the top
   const sortedNotices = [...allNoticesData].sort((a, b) => {
     const importanceOrder = { high: 0, medium: 1, low: 2 };
     return (

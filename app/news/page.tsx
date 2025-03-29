@@ -101,7 +101,8 @@ export default function NewsPage() {
       month: "long",
       day: "numeric",
     };
-    return new Date(dateString).toLocaleDateString(undefined, options);
+    // Specify 'en-US' locale to ensure consistent formatting between server and client
+    return new Date(dateString).toLocaleDateString("en-US", options);
   };
 
   return (
@@ -123,13 +124,15 @@ export default function NewsPage() {
           >
             <CardContent className="p-6">
               <div className="flex justify-between items-start mb-3">
-                <h2 className="text-xl font-semibold">{news.title}</h2>
-                <div className="flex items-center text-sm text-muted-foreground">
+                <h2 className="text-lg font-semibold">{news.title}</h2>
+                <div className="flex items-center text-xs text-muted-foreground">
                   <Calendar className="h-4 w-4 mr-1" />
                   <span>{formatDate(news.date)}</span>
                 </div>
               </div>
-              <p className="text-muted-foreground mb-4">{news.summary}</p>
+              <p className="text-muted-foreground text-base mb-4">
+                {news.summary}
+              </p>
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
                   {news.importance === "high" && (
@@ -141,7 +144,7 @@ export default function NewsPage() {
                 <Button
                   onClick={() => openNewsDialog(news)}
                   variant="outline"
-                  className="transition-all hover:bg-primary/10"
+                  className="transition-all hover:bg-black hover:text-white"
                 >
                   Read Full Article
                 </Button>
@@ -155,8 +158,8 @@ export default function NewsPage() {
         <DialogContent className="max-w-2xl rounded-lg border-2 shadow-lg">
           <DialogHeader>
             <DialogTitle className="text-xl">{selectedNews?.title}</DialogTitle>
-            <div className="flex items-center text-sm text-muted-foreground mt-1">
-              <Calendar className="h-4 w-4 mr-1" />
+            <div className="flex items-center text-xs text-muted-foreground mt-1">
+              <Calendar className="h-4 w-4 mr-1 " />
               <span>{selectedNews?.date && formatDate(selectedNews.date)}</span>
             </div>
           </DialogHeader>

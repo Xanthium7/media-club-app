@@ -16,6 +16,7 @@ import EventCarousel from "@/components/event-carousel";
 import { useState } from "react";
 import { Anton } from "next/font/google";
 import { Marquee } from "@/components/magicui/marquee";
+import { SpinningText } from "@/components/magicui/spinning-text";
 
 const anton = Anton({
   subsets: ["latin"],
@@ -114,8 +115,8 @@ export default function Home() {
       {/* Header section */}
       <div className="flex items-center justify-between py-3">
         <div>
-          <h1 className="text-2xl font-bold">Hello, Mr Potato</h1>
-          <p className="text-muted-foreground mt-1">
+          <h1 className="text-2xl font-semibold">Hello</h1>
+          <p className="text-muted-foreground  mt-1">
             Discover events at your college
           </p>
         </div>
@@ -128,7 +129,7 @@ export default function Home() {
 
       {/* Hot Events section */}
       <div className="relative mt-6">
-        <h2 className="text-xl font-bold mb-5 flex items-center">
+        <h2 className="text-xl font-medium mb-5 flex items-center">
           Hot Events
           <span className="ml-2 inline-block h-2 w-2 rounded-full bg-accent pulse-accent"></span>
         </h2>
@@ -345,7 +346,7 @@ export default function Home() {
       <div className="flex justify-center items-center h-48 mt-12">
         <div className="px-8 py-10 rounded-xl w-full text-center">
           <h1
-            className={`${anton.className} text-7xl text-center font-extrabold text-[#3a3a3a] opacity-80 tracking-wider`}
+            className={`${anton.className} text-6xl text-center font-extrabold text-[#3a3a3a] opacity-80 tracking-wider`}
           >
             EPIC VIBES <br /> ZERO STRESS
           </h1>

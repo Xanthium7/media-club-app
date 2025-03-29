@@ -197,8 +197,10 @@ const AuthPage = () => {
             <AnimatedSparkle delay={1.5} />
           </div>
         </div>
-        <h1 className="text-5xl font-bold mb-4">Your Event Guide 2025</h1>
-        <p className={`text-xl ${secondaryText} mb-6`}>
+        <h1 className="text-6xl font-medium text-left mb-4">
+          Your Event Guide
+        </h1>
+        <p className={`text-xl ${secondaryText} mb-6 text-left`}>
           Discover, book, and enjoy events like never before.
         </p>
       </div>

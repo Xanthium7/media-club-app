@@ -130,10 +130,10 @@ export default function EventsPage() {
               <DialogTitle>Filter Events</DialogTitle>
             </DialogHeader>
             <div className="space-y-4 py-4">
-              <div className="space-y-2">
+              <div className="space-y-2 ">
                 <label className="text-sm font-medium">Club</label>
                 <Select value={clubFilter} onValueChange={setClubFilter}>
-                  <SelectTrigger className="w-full">
+                  <SelectTrigger className="w-full ">
                     <SelectValue placeholder="All Clubs" />
                   </SelectTrigger>
                   <SelectContent>
@@ -165,11 +165,17 @@ export default function EventsPage() {
               </div>
 
               <div className="flex justify-between pt-4">
-                <Button variant="outline" onClick={resetFilters}>
+                <Button
+                  variant="outline"
+                  className="hover:bg-black hover:text-white"
+                  onClick={resetFilters}
+                >
                   Reset
                 </Button>
                 <DialogClose asChild>
-                  <Button>Apply Filters</Button>
+                  <Button className="bg-accent/80 hover:bg-accent/60">
+                    Apply Filters
+                  </Button>
                 </DialogClose>
               </div>
             </div>
@@ -197,9 +203,9 @@ export default function EventsPage() {
         )}
       </div>
 
-      <div className="flex gap-2 overflow-x-auto pb-2 -mx-4 px-4">
+      <div className="flex gap-2 overflow-x-auto pb-2 pt-2 -mx-4 px-4">
         <Select value={clubFilter} onValueChange={setClubFilter}>
-          <SelectTrigger className="w-[140px] rounded-full bg-secondary border-0">
+          <SelectTrigger className="w-[140px] rounded-full  bg-secondary border-0">
             <SelectValue placeholder="All Clubs" />
           </SelectTrigger>
           <SelectContent>

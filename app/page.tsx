@@ -133,16 +133,20 @@ export default function Home() {
           Hot Events
           <span className="ml-2 inline-block h-2 w-2 rounded-full bg-accent pulse-accent"></span>
         </h2>
-        <div className="rounded-lg overflow-hidden shadow-sm">
-          <EventCarousel />
+        <div className="relative w-screen left-1/2 right-1/2  transform -translate-x-1/2 overflow-hidden shadow-sm">
+          <div className="rounded-lg overflow-hidden">
+            <EventCarousel />
+          </div>
         </div>
       </div>
-      <Marquee className="bg-black text-white/50 py-2 shadow-md border-t-[1px] border-b-[1px] border-[#292929]">
-        <div className="text-center text-sm font-medium uppercase tracking-wide">
-          {important_information_for_marq}
-          <span className="pl-3">∘</span>
-        </div>
-      </Marquee>
+      <div className="relative w-screen left-1/2 right-1/2  transform -translate-x-1/2 overflow-hidden shadow-sm">
+        <Marquee className="bg-black text-white/50 py-2 shadow-md border-t-[1px] border-b-[1px] border-[#292929]">
+          <div className="text-center text-sm font-medium uppercase tracking-wide">
+            {important_information_for_marq}
+            <span className="pl-3">∘</span>
+          </div>
+        </Marquee>
+      </div>
 
       {/* Tabs section with Marquee carousels */}
       <div className="mt-8">
